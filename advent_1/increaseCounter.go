@@ -28,8 +28,7 @@ func init() {
 	}
 }
 
-func main() {
-
+func getInput() []string {
 	jsonFile, err := os.Open("variables.json")
 	defer jsonFile.Close()
 	byteValue, _ := ioutil.ReadAll(jsonFile)
@@ -60,10 +59,10 @@ func main() {
 	}
 
 	sb := string(body)
-	//log.Printf(sb)
-	arr := strings.Fields(sb)
-	//log.Println(arr)
+	return strings.Fields(sb)
+}
 
+func getAmountOfIncreases(arr []string) int {
 	var prev *int = nil
 	var counter int = 0
 
@@ -73,7 +72,33 @@ func main() {
 			counter++
 		}
 		prev = &cur
-	}
 
-	fmt.Println(counter)
+	}
+	return counter
+}
+
+func getIncreaseInThree(arr []string) int {
+	var prev *int = nil
+	var counter int = 0
+
+	for i := 0; i < len(arr)-2; i++ {
+		var cur int = 0
+		for j := 0; j < 3; j++ {
+			temp, _ := strconv.Atoi(arr[i+j])
+			cur += temp
+		}
+		if prev != nil && cur > *prev {
+			counter++
+		}
+		prev = &cur
+	}
+	return counter
+}
+
+func main() {
+
+	arr := getInput()
+
+	fmt.Println(getAmountOfIncreases(arr))
+	fmt.Println(getIncreaseInThree(arr))
 }
